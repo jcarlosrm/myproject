@@ -115,7 +115,6 @@ int main(int argc, const char* argv[]) {
     fread(&height, sizeof(int), 1, fbin);
     fread(&width, sizeof(int), 1, fbin);
     float* f_imData= new float [height*width];
-    //float* f_imData=(float *)malloc(sizeof(float)* height*width);
     fread(f_imData, sizeof(float), height*width, fbin);
     fclose(fbin);
 
@@ -130,18 +129,13 @@ int main(int argc, const char* argv[]) {
 //Variables for GPU stages
     for (int i = 0; i < num_filters * filter_dim * filter_dim; i++)
       {
-        
+
         opencl_FilterBank[i]=float( std::rand() ) / RAND_MAX;
       }
-    //coefficients_gpu = (float *) malloc(sizeof(float) * n_total_coeff);
     for(int i = 0; i < n_total_coeff; i++)
       {
-        //coefficients_gpu[i] = float(std::rand())/RAND_MAX;
-        //opencl_coefficients[i]=coefficients_gpu[i];
         opencl_coefficients[i]= float(std::rand())/RAND_MAX;
       }
-    //CREO QUE AQUI ESTABA EL ERROR DE LOS SEGMENTATION_FAULT
-    //for(int i=0;i<sizeof(float)* height*width;i++)
       for(int i=0;i<height*width;i++)
      {
        opencl_imagen[i]=f_imData[i];
@@ -222,7 +216,7 @@ DISPATCH_NODE. This node starts the stage 1 for GPU and begins the GPU path.
 ****************************** */
     typedef multifunction_node<join1_t::output_type, buffer_datosGPU2, reserving > mfn1_t;
     mfn1_t output_gpu1(g, unlimited, [&](const join1_t::output_type &m, mfn1_t::output_ports_type &ports ) {
-       TGPU1 = tbb::tick_count::now();
+       //TGPU1 = tbb::tick_count::now();
        //std::cout <<"GPU 1= "<< (TGPU1 - TGPU).seconds() <<" segundos"<<std::endl;
        get<0>(ports).try_put(opencl_his);
        get<1>(ports).try_put(pitch);
@@ -239,7 +233,7 @@ DISPATCH_NODE. This node starts the stage 1 for GPU and begins the GPU path.
 ****************************** */
     typedef multifunction_node<join2_t::output_type, buffer_datosGPU3 > mfn2_t;
     mfn2_t output_gpu2(g, unlimited, [&](const join2_t::output_type &m, mfn2_t::output_ports_type &ports ) {
-       TGPU2 = tbb::tick_count::now();
+       //TGPU2 = tbb::tick_count::now();
        //std::cout <<"GPU 2= "<< (TGPU2 - TGPU1).seconds() <<" segundos"<<std::endl;
        get<0>(ports).try_put(opencl_coefficients);
        get<1>(ports).try_put(width);
@@ -255,7 +249,7 @@ DISPATCH_NODE. This node starts the stage 1 for GPU and begins the GPU path.
 ****************************** */
     typedef multifunction_node<join3_t::output_type, tuple<out_gpu,int> > mfn3_t;
     mfn3_t output_gpu3(g, unlimited, [&](const join3_t::output_type &m, mfn3_t::output_ports_type &ports ) {
-       TGPU3 = tbb::tick_count::now();
+       //TGPU3 = tbb::tick_count::now();
        int token_gpu=0;
        //std::cout <<"GPU 3= "<< (TGPU3 - TGPU2).seconds() <<" segundos"<<std::endl;
        //std::cout << "Total GPU="<<(TGPU3-TGPU).seconds() <<" segundos"<< '\n';
@@ -304,7 +298,6 @@ DISPATCH_NODE. This node starts the stage 1 for GPU and begins the GPU path.
   function_node<datos_imagen,datos_imagen> cpu_f3(g,unlimited,[&](datos_imagen datos) {
 
       float * coefficients = new float [n_total_coeff];
-      //float * coefficients = (float *) malloc(sizeof(float) * n_total_coeff);
 			for(int i = 0; i < n_total_coeff; i++)
         {
   				coefficients[i] = float(std::rand())/RAND_MAX;
