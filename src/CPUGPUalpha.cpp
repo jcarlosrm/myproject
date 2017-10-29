@@ -120,14 +120,6 @@ int main(int argc, const char* argv[]) {
     fclose(fbin);
 
 //This is the way to define buffers for the OpenCL node.
-    // buffer_float opencl_imagen(g,sizeof(float)* height*width);
-    // buffer_float opencl_ind(g,sizeof(float)* height*width);
-    // buffer_float opencl_val(g,sizeof(float)* height*width);
-    // buffer_float opencl_FilterBank(g,num_filters * filter_dim * filter_dim * sizeof(float));
-    // buffer_float opencl_his(g,n_parts_x_gpu * n_parts_y_gpu * 100 * sizeof(float));
-    // buffer_float opencl_out(g,sizeof(float)* n_total_coeff/dict_size*n_parts_x_gpu * n_parts_y_gpu);
-    // buffer_float opencl_coefficients(g,sizeof(float) * n_total_coeff);
-
     buffer_float opencl_imagen(g,height*width);
     buffer_float opencl_ind(g,height*width);
     buffer_float opencl_val(g,height*width);
@@ -136,11 +128,9 @@ int main(int argc, const char* argv[]) {
     buffer_float opencl_out(g,n_total_coeff/dict_size*n_parts_x_gpu * n_parts_y_gpu);
     buffer_float opencl_coefficients(g,n_total_coeff);
 //Variables for GPU stages
-    //filter_bank_gpu = (float*) malloc(num_filters * filter_dim * filter_dim * sizeof(float));
     for (int i = 0; i < num_filters * filter_dim * filter_dim; i++)
       {
-        //filter_bank_gpu[i] = float( std::rand() ) / RAND_MAX;
-        //opencl_FilterBank[i]=filter_bank_gpu[i];
+        
         opencl_FilterBank[i]=float( std::rand() ) / RAND_MAX;
       }
     //coefficients_gpu = (float *) malloc(sizeof(float) * n_total_coeff);
