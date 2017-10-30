@@ -94,7 +94,7 @@ int main(int argc, const char* argv[]) {
 
 //Graph and OpenCL nodes definition
     opencl_graph g;
-    opencl_program<> program(g, "Filtros_GPU.cl");
+    opencl_program<> program(g, "Filtros_GPU_copy.cl");
     opencl_node<buffer_datosGPU1> GPU_F1(g, program.get_kernel("blockwise_distance_kernel"));
     opencl_node<buffer_datosGPU2> GPU_F2(g, program.get_kernel("cellHistogramKernel3"));
     opencl_node<buffer_datosGPU3> GPU_F3(g, program.get_kernel("pairwiseDistanceKernel"));
