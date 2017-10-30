@@ -3,6 +3,14 @@ to compile files:
 
 g++-6 CPUGPUalpha.cpp -o CPUGPUalpha -ltbb -std=c++11 -framework OpenCL -w
 
+to execute (example):
+
+CPUGPUalplha 10 2 1 4
+
+10=num images; 2=tokens_cpu; 1=tokens_gpu; 4=num threads
+
+
+
 
 #Estado actual de desarrollo:
 
