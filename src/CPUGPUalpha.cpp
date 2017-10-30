@@ -78,6 +78,7 @@ int main(int argc, const char* argv[]) {
     if (argc < 4){
   		printf("Not enough parameters.\n 1- NUM_IMAGES.\n 2- tokens_cpu.\n");
       printf(" 3- tokens_gpu.\n");
+      printf(" 4- nº threads.\n");
       printf("They can be: tokens_cpu [0-4], tokens_gpu [0-1] \n");
   		return -1;
   	}
@@ -270,9 +271,9 @@ DISPATCH_NODE. This node starts the stage 1 for GPU and begins the GPU path.
 
     datos_imagen datos2;
     get<6>(datos2)=ID_imagen;
-    float* image2= new float [height*width];
-    memcpy(image2,f_imData,height*width);
-    get<0>(datos2)=image2;
+     float* image2= new float [height*width];
+     memcpy(image2,f_imData,height*width);
+    get<0>(datos2)=f_imData;
     get<5>(datos2)=1;
     get<1>(datos2)=new float [height*width];
     get<2>(datos2)=new float [height*width];
@@ -288,7 +289,7 @@ DISPATCH_NODE. This node starts the stage 1 for GPU and begins the GPU path.
 
 	function_node<datos_imagen,datos_imagen> cpu_f2(g,unlimited,[&](datos_imagen datos) {
 
-      float* his = block_histogram(get<1>(datos),get<2>(datos), num_filters, 8, 0, 0, height, width);
+      float* his = block_histogram(get<1>(datos),get<2>(datos), num_filters, 8, 1, 1, height, width);
 			get<3>(datos)=his;
 			delete(get<1>(datos));
 			delete(get<2>(datos));

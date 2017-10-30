@@ -1,4 +1,4 @@
-int n_parts_x;
+int n_parts_x;//Added to have this functions in the .h
 int n_parts_y;
 
 /******************************************
